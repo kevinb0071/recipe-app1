@@ -4,9 +4,10 @@ import * as RecipeAPI from '../api';
 
 interface Props {
     recipeId: string;
+    onClose: () => void;
 }
 
-const RecipeModal = ({recipeId}: Props) => {
+const RecipeModal = ({recipeId, onClose}: Props) => {
     const [recipeSummary, setRecipeSummary] = useState<RecipeSummary>();
     useEffect(() =>{
         const fetchRecipeSummary = async () => {
@@ -29,8 +30,8 @@ const RecipeModal = ({recipeId}: Props) => {
       <div className="modal">
         <div className="modal-content">
           <div className="modal-header">
-            <h2>{recipeSummary?.id}</h2>
-            <span className="close-btn">&times;</span>
+            <h2>{recipeSummary.title}</h2>
+            <span className="close-btn" onClick={onClose}>&times;</span>
           </div>
           <p dangerouslySetInnerHTML={{ __html: recipeSummary.summary}}></p>
         </div>
