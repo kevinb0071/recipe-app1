@@ -51,6 +51,14 @@ const App = () => {
     }
   };
 
+  const addFavoriteRecipe = async (recipe: Recipe) => {
+    try {
+      await api.addFavoriteRecipe(recipe);
+      setFavoriteRecipes([...favoriteRecipes, recipe]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div>
       <div className="tabs">
@@ -71,12 +79,17 @@ const App = () => {
             />
             <button type="submit">Submit</button>
           </form>
-          {recipes.map((recipe) => (
+          {recipes.map((recipe) => { 
+            const isFavorite = favoriteRecipes.some((favRecipe) => recipe.id === favRecipe.id);
+            return (
             <RecipeCard
               recipe={recipe}
               onClick={() => setSelectedRecipe(recipe)}
+              onFavoriteButtonClick={addFavoriteRecipe}
+              isFavorite={isFavorite}
             />
-          ))}
+          );
+          })}
 
           <button className="view-more-button" onClick={handleViewMoreClick}>
             View More
@@ -90,6 +103,8 @@ const App = () => {
             <RecipeCard
               recipe={recipe}
               onClick={() => setSelectedRecipe(recipe)}
+              onFavoriteButtonClick={() => undefined}
+              isFavorite={true}
             />
           ))}
         </div>
